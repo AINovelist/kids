@@ -1,12 +1,26 @@
-import { Group } from '@mantine/core';
-import { TextInput, Button } from '@mantine/core';
+import { AppShell, Burger } from '@mantine/core';
 
 export function HomePage() {
   return (
-    <Group>
-      <h1>My Mantine Form</h1>
-      <TextInput label="Your Name" placeholder="John Doe" />
-      <Button mt="md">Submit</Button>
-    </Group>
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: 'sm',
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Burger
+          hiddenFrom="sm"
+          size="sm"
+        />
+        <div>Logo</div>
+      </AppShell.Header>
+
+      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+
+      <AppShell.Main>Main</AppShell.Main>
+    </AppShell>
   );
 }

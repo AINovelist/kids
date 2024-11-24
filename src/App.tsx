@@ -1,13 +1,14 @@
-import React from 'react';
 import { HomePage } from './components/HomePage';
+import { createTheme, MantineProvider } from '@mantine/core';
 
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <HomePage />
-      </header>
-    </div>
+    <MantineProvider theme={theme}>
+      <HomePage />
+    </MantineProvider>
   );
 }
 
