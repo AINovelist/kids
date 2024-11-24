@@ -239,7 +239,7 @@ export function HomePage() {
 
       {response && (
         <Paper shadow="sm" p="lg" radius="md" withBorder mt="xl">
-          <Text size="xl" mb="md">پاسخ سرور:</Text>
+          <Text size="xl" mb="md"> قصه:</Text>
           <Text>{response}</Text>
         </Paper>
       )}
