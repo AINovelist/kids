@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import {
   Card,
   TextInput,
@@ -16,8 +16,29 @@ import {
 import { useForm } from "@mantine/form";
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
+import axios from "axios";
 
 export function HomePage() {
+  const [response, setResponse] = useState('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsGenerating(true);
+  
+    try {
+      const response = await axios.post('https://aibots.kharcoin.info/ai-story/build', form.values);
+      console.log(response.data);
+      setResponse(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+      setResponse('Failed to submit form');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+
+// @ts-ignore
   const [story, setStory] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -52,7 +73,7 @@ export function HomePage() {
         !value ? "لطفاً یک موضوع زیست‌محیطی انتخاب کنید" : null,
     },
   });
-
+// @ts-ignore
   const [formData] = useState({
     childName: "",
     age: "",
@@ -97,7 +118,7 @@ export function HomePage() {
     {
       id: "multipleIntelligences",
       label: "هوش‌های چندگانه گاردنر",
-      description: "استفاده از انواع مختلف هوش در داستان",
+      description: "استفاده از انواع مختلف ��وش در داستان",
     },
     {
       id: "vygotsky",
@@ -110,87 +131,10 @@ export function HomePage() {
       description: "تقویت حس استقلال و تاثیرگذاری کودک",
     },
   ];
-
+// @ts-ignore
   const generateStory = () => {
-    
-    setIsGenerating(true);
-
-    // Create story based on selected academic approaches
-    const ageGroup = typeof formData.age === 'number' ? (formData.age <= 7 ? "young" : "older") : "unknown";
-    let storyElements = [];
-
-    // Add story elements based on selected approaches
-    if (formData.academicApproaches.piaget) {
-      // Adapt language and concepts based on age
-      storyElements.push(
-        ageGroup === "young"
-          ? "با زبانی ساده و تصویری"
-          : "با مفاهیم پیچیده‌تر و منطقی"
-      );
-    }
-
-    if (formData.academicApproaches.activeLearning) {
-      storyElements.push("در طول داستان چند تصمیم مهم برای گرفتن وجود دارد");
-    }
-
-    if (formData.academicApproaches.roleModeling) {
-      storyElements.push(
-        `${formData.childName} به عنوان یک الگو برای دیگران عمل می‌کند`
-      );
-    }
-
-    if (formData.academicApproaches.multipleIntelligences) {
-      storyElements.push(
-        "از ترکیب هنر، منطق، و ارتباط با طبیعت استفاده می‌شود"
-      );
-    }
-
-    if (formData.academicApproaches.vygotsky) {
-      storyElements.push("یک راهنمای دانا در داستان حضور دارد");
-    }
-
-    if (formData.academicApproaches.personalMotivation) {
-      storyElements.push("تاکید بر توانایی‌های شخصی و استقلال در تصمیم‌گیری");
-    }
-
-    let generatedStory = "";
-
-    if (ageGroup === "young") {
-      generatedStory = `
-        یک روز قشنگ، ${formData.childName} کوچولوی ${formData.age} ساله که در ${
-        formData.livingEnvironment
-      } زندگی می‌کرد،
-        تصمیم گرفت به طبیعت کمک کند. موضوعی که خیلی براش مهم بود ${
-          formData.environmentalTopic
-        } بود.
-        
-        ${storyElements.map((element) => `\n${element}`).join("")}
-        
-        ${
-          formData.childName
-        } با کمک دوست جدیدش، یک سنجاب دانا به نام دانا، یاد گرفت که چطور می‌تونه به حفظ محیط زیست کمک کنه.
-        
-        اونها با هم تصمیم گرفتن...
-      `;
-    } else {
-      generatedStory = `
-        ${formData.childName} ${formData.age} ساله، که در ${
-        formData.livingEnvironment
-      } زندگی می‌کرد،
-        یک روز متوجه مشکل مهمی در محیط زیست شد. اون تصمیم گرفت درباره ${
-          formData.environmentalTopic
-        } کاری انجام بده.
-        
-        ${storyElements.map((element) => `\n${element}`).join("")}
-        
-        با کمک دوستاش و راهنمایی معلمش، ${
-          formData.childName
-        } یک برنامه عملی طراحی کرد...
-      `;
-    }
-
-    setStory(generatedStory);
-    setIsGenerating(false);
+    // @ts-ignore
+    handleSubmit(event);
   };
 
   return (<>
@@ -218,7 +162,9 @@ export function HomePage() {
     </Container>
     <Container size="lg" dir="rtl">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <form onSubmit={form.onSubmit(generateStory)}>
+        <form onSubmit={handleSubmit} 
+        // onSubmit={form.onSubmit(generateStory)}
+        >
           <Stack>
             <TextInput
               label="نام کودک"
@@ -290,6 +236,14 @@ export function HomePage() {
           </Text>
         </Paper>
       )}
+
+      {response && (
+        <Paper shadow="sm" p="lg" radius="md" withBorder mt="xl">
+          <Text size="xl" mb="md">پاسخ سرور:</Text>
+          <Text>{response}</Text>
+        </Paper>
+      )}
+
     </Container>
     </>
   );
