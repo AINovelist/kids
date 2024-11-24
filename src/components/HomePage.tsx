@@ -50,7 +50,7 @@ export function HomePage() {
     },
   });
 
-  const [formData, setFormData] = useState({
+  const [formData] = useState({
     childName: "",
     age: "",
     environmentalTopic: "",
