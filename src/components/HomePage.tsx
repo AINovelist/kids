@@ -118,7 +118,7 @@ export function HomePage() {
     {
       id: "multipleIntelligences",
       label: "هوش‌های چندگانه گاردنر",
-      description: "استفاده از انواع مختلف ��وش در داستان",
+      description: "استفاده از انواع مختلف هوش در داستان",
     },
     {
       id: "vygotsky",
