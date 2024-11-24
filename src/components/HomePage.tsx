@@ -11,8 +11,11 @@ import {
   Stack,
   Grid,
   Paper,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { Dots } from './Dots';
+import classes from './HeroText.module.css';
 
 export function HomePage() {
   const [story, setStory] = useState("");
@@ -190,13 +193,31 @@ export function HomePage() {
     setIsGenerating(false);
   };
 
-  return (
+  return (<>
+  <Container className={classes.wrapper} size={1400}>
+      <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+      <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
+      <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+      <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
+
+      <div className={classes.inner}>
+        <Title className={classes.title}>
+          قصه‌گوی 
+          <Text component="span" className={classes.highlight} inherit> هوش مصنوعی </Text>
+          برای کودکان
+        </Title>
+
+        <Container p={0} size={600}>
+          <Text size="lg" c="dimmed" className={classes.description}>
+            تا حالا تلاش کردید با کمک هوش مصنوعی برای کودکان قصه بسازید؟ احتمالا تجربه خوبی نداشتید و نتیجه عجیب و غریبی تحویل گرفتید! 
+            <br />یا حتا اگر نتیجه خوبی در بر داشته، در مورد کیفیت آکادمیک آن که بر رشد و شناخت کودک چه تاثیری میگذارد شک کردید،
+            <br />با این قصه گوی ما، قصه متفاوتی را تجربه کنید
+          </Text>
+        </Container>
+      </div>
+    </Container>
     <Container size="lg" dir="rtl">
       <Card shadow="sm" p="lg" radius="md" withBorder>
-        <Text size="xl">
-          سازنده داستان کودک
-        </Text>
-
         <form onSubmit={form.onSubmit(generateStory)}>
           <Stack>
             <TextInput
@@ -270,5 +291,6 @@ export function HomePage() {
         </Paper>
       )}
     </Container>
+    </>
   );
 }
