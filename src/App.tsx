@@ -1,14 +1,19 @@
 import { HomePage } from './components/HomePage';
-import { createTheme, MantineProvider } from '@mantine/core';
+import { createTheme, DirectionProvider, MantineProvider } from '@mantine/core';
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  fontFamily: 'Vazirmatn, sans-serif',
+  headings: {
+    fontFamily: 'Vazirmatn, sans-serif',
+  },
 });
 function App() {
   return (
+    <DirectionProvider>
     <MantineProvider theme={theme}>
       <HomePage />
     </MantineProvider>
+    </DirectionProvider>
   );
 }
 
