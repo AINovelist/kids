@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Card,
   TextInput,
-  NumberInput,
   Select,
   Checkbox,
   Button,
@@ -12,40 +11,24 @@ import {
   Grid,
   Paper,
   Title,
+  Slider,
+  Progress,
+  Group,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
-import axios from "axios";
 
 export function HomePage() {
   const [response, setResponse] = useState('');
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsGenerating(true);
-  
-    try {
-      const response = await axios.post('https://aibots.kharcoin.info/ai-story/build', form.values);
-      console.log(response.data);
-      setResponse(response.data);
-    } catch (error) {
-      console.error('Error:', error);
-      setResponse('Failed to submit form');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-
-// @ts-ignore
-  const [story, setStory] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
-
+  const [showForm, setShowForm] = useState(true);
+  
   const form = useForm({
     initialValues: {
       childName: "",
-      age: "",
+      age: 6,
       environmentalTopic: "",
       livingEnvironment: "",
       academicApproaches: {
@@ -60,32 +43,14 @@ export function HomePage() {
     validate: {
       childName: (value) =>
         value.trim().length === 0 ? "لطفاً نام کودک را وارد کنید" : null,
-      age: (value: string): string | null => {
-        const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) {
-          return "لطفاً سن معتبر بین 2 تا 11 سال وارد کنید";
-        }
-        return numValue < 2 || numValue > 11
+      age: (value) =>
+        value < 2 || value > 11
           ? "لطفاً سن معتبر بین 2 تا 11 سال وارد کنید"
-          : null;
-      },
+          : null,
       environmentalTopic: (value) =>
         !value ? "لطفاً یک موضوع زیست‌محیطی انتخاب کنید" : null,
-    },
-  });
-// @ts-ignore
-  const [formData] = useState({
-    childName: "",
-    age: "",
-    environmentalTopic: "",
-    livingEnvironment: "",
-    academicApproaches: {
-      piaget: false,
-      activeLearning: false,
-      roleModeling: false,
-      multipleIntelligences: false,
-      vygotsky: false,
-      personalMotivation: false,
+      livingEnvironment: (value) =>
+        !value ? "لطفاً محیط زندگی را انتخاب کنید" : null,
     },
   });
 
@@ -131,120 +96,141 @@ export function HomePage() {
       description: "تقویت حس استقلال و تاثیرگذاری کودک",
     },
   ];
-// @ts-ignore
-  const generateStory = () => {
-    // @ts-ignore
-    handleSubmit(event);
+
+  const handleSubmit = async (values) => {
+    setIsGenerating(true);
+  
+    try {
+      const response = await fetch('https://aibots.kharcoin.info/ai-story/build', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      
+      const data = await response.json();
+      setResponse(data);
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setResponse('متاسفانه در ارسال فرم خطایی رخ داد');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  return (<>
-  <Container className={classes.wrapper} size={1400}>
-      <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
-      <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
+  return (
+    <>
+      <Container className={classes.wrapper} size={1400}>
+        <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+        <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
-      <div className={classes.inner}>
-        <Title className={classes.title}>
-          قصه‌گوی 
-          <Text component="span" className={classes.highlight} inherit> هوش مصنوعی </Text>
-          برای کودکان
-        </Title>
-
-        <Container p={0} size={600}>
-          <Text size="lg" c="dimmed" className={classes.description}>
-            تا حالا تلاش کردید با کمک هوش مصنوعی برای کودکان قصه بسازید؟ احتمالا تجربه خوبی نداشتید و نتیجه عجیب و غریبی تحویل گرفتید! 
-            <br />یا حتا اگر نتیجه خوبی در بر داشته، در مورد کیفیت آکادمیک آن که بر رشد و شناخت کودک چه تاثیری میگذارد شک کردید،
-            <br />با این قصه گوی ما، قصه متفاوتی را تجربه کنید
-          </Text>
-        </Container>
-      </div>
-    </Container>
-    <Container size="lg" dir="rtl">
-      <Card shadow="sm" p="lg" radius="md" withBorder>
-        <form onSubmit={handleSubmit} 
-        // onSubmit={form.onSubmit(generateStory)}
-        >
-          <Stack>
-            <TextInput
-              label="نام کودک"
-              placeholder="نام کودک را وارد کنید"
-              {...form.getInputProps("childName")}
-            />
-
-            <NumberInput
-              label="سن کودک"
-              placeholder="سن کودک را وارد کنید"
-              min={2}
-              max={11}
-              {...form.getInputProps("age")}
-            />
-
-            <Select
-              label="موضوع زیست‌محیطی"
-              placeholder="انتخاب کنید"
-              data={environmentalTopics}
-              {...form.getInputProps("environmentalTopic")}
-            />
-
-            <Select
-              label="محیط زندگی"
-              placeholder="انتخاب کنید"
-              data={livingEnvironments}
-              {...form.getInputProps("livingEnvironment")}
-            />
-
-            <Text size="sm">
-              رویکردهای آکادمیک
+        <div className={classes.inner}>
+          <Title className={classes.title}>
+            قصه‌گوی
+            <Text component="span" className={classes.highlight} inherit>
+              {" "}
+              هوش مصنوعی{" "}
             </Text>
-            <Grid>
-              {academicApproachesData.map((approach) => (
-                <Grid.Col span={6} key={approach.id}>
-                  <Checkbox
-                    label={approach.label}
-                    description={approach.description}
-                    {...form.getInputProps(
-                      `academicApproaches.${approach.id}`,
-                      { type: "checkbox" }
-                    )}
+            برای کودکان
+          </Title>
+
+          <Container p={0} size={600}>
+            <Text size="lg" c="dimmed" className={classes.description}>
+              تا حالا تلاش کردید با کمک هوش مصنوعی برای کودکان قصه بسازید؟ احتمالا
+              تجربه خوبی نداشتید و نتیجه عجیب و غریبی تحویل گرفتید!
+              <br />
+              یا حتا اگر نتیجه خوبی در بر داشته، در مورد کیفیت آکادمیک آن که بر
+              رشد و شناخت کودک چه تاثیری میگذارد شک کردید،
+              <br />
+              با این قصه گوی ما، قصه متفاوتی را تجربه کنید
+            </Text>
+          </Container>
+        </div>
+      </Container>
+
+      <Container size="lg" dir="rtl">
+        {showForm ? (
+          <Card shadow="sm" p="lg" radius="md" withBorder>
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <LoadingOverlay visible={isGenerating} overlayProps={{ blur: 2 }} />
+              <Stack>
+                <TextInput
+                  label="نام کودک"
+                  placeholder="نام کودک را وارد کنید"
+                  {...form.getInputProps("childName")}
+                />
+
+                <Stack>
+                  <Text size="sm">سن کودک: {form.values.age} سال</Text>
+                  <Slider
+                    min={2}
+                    max={11}
+                    step={1}
+                    marks={[
+                      { value: 2, label: '2' },
+                      { value: 6, label: '6' },
+                      { value: 11, label: '11' },
+                    ]}
+                    {...form.getInputProps("age")}
                   />
-                </Grid.Col>
-              ))}
-            </Grid>
+                </Stack>
 
-            <Button type="submit" loading={isGenerating}>
-              {isGenerating ? "در حال ساخت داستان..." : "ساخت داستان"}
-            </Button>
-          </Stack>
-        </form>
-      </Card>
+                <Select
+                  label="موضوع زیست‌محیطی"
+                  placeholder="انتخاب کنید"
+                  data={environmentalTopics}
+                  {...form.getInputProps("environmentalTopic")}
+                />
 
-      {story && (
-        <Paper shadow="sm" p="lg" radius="md" withBorder mt="xl">
-          <Text size="xl" mb="md">
-            داستان {form.values.childName}
-          </Text>
-          <Text>
-            {story.split("\n").map(
-              (paragraph, index) =>
-                paragraph.trim() && (
-                  <Text key={index} mb="md">
-                    {paragraph}
-                  </Text>
-                )
-            )}
-          </Text>
-        </Paper>
-      )}
+                <Select
+                  label="محیط زندگی"
+                  placeholder="انتخاب کنید"
+                  data={livingEnvironments}
+                  {...form.getInputProps("livingEnvironment")}
+                />
 
-      {response && (
-        <Paper shadow="sm" p="lg" radius="md" withBorder mt="xl">
-          <Text size="xl" mb="md"> قصه:</Text>
-          <Text>{response}</Text>
-        </Paper>
-      )}
+                <Text size="sm">رویکردهای آکادمیک</Text>
+                <Grid>
+                  {academicApproachesData.map((approach) => (
+                    <Grid.Col span={6} key={approach.id}>
+                      <Checkbox
+                        label={approach.label}
+                        description={approach.description}
+                        {...form.getInputProps(`academicApproaches.${approach.id}`, {
+                          type: "checkbox",
+                        })}
+                      />
+                    </Grid.Col>
+                  ))}
+                </Grid>
 
-    </Container>
+                <Button type="submit" loading={isGenerating}>
+                  {isGenerating ? "در حال ساخت داستان..." : "ساخت داستان"}
+                </Button>
+              </Stack>
+            </form>
+          </Card>
+        ) : (
+          <Paper shadow="sm" p="lg" radius="md" withBorder>
+            <Stack>
+              <Text size="xl" mb="md">
+                داستان {form.values.childName} در  {form.values.livingEnvironment} برای {form.values.environmentalTopic}
+              </Text>
+              <Text>
+                {response.message}
+                {response.toString()}                
+              </Text>
+              <Button variant="light" onClick={() => setShowForm(true)}>
+                ساخت داستان جدید
+              </Button>
+            </Stack>
+          </Paper>
+        )}
+      </Container>
     </>
   );
 }
