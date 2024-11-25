@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   TextInput,
@@ -12,19 +12,32 @@ import {
   Paper,
   Title,
   Slider,
-  Progress,
-  Group,
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Dots } from './Dots';
-import classes from './HeroText.module.css';
+import { Dots } from "./Dots";
+import classes from "./HeroText.module.css";
+
+interface FormValues {
+  childName: string;
+  age: number;
+  environmentalTopic: string;
+  livingEnvironment: string;
+  academicApproaches: {
+    piaget: boolean;
+    activeLearning: boolean;
+    roleModeling: boolean;
+    multipleIntelligences: boolean;
+    vygotsky: boolean;
+    personalMotivation: boolean;
+  };
+}
 
 export function HomePage() {
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showForm, setShowForm] = useState(true);
-  
+
   const form = useForm({
     initialValues: {
       childName: "",
@@ -54,15 +67,21 @@ export function HomePage() {
     },
   });
 
-  const environmentalTopics = [
-    "حفاظت از حیوانات",
-    "کاهش زباله",
-    "صرفه‌جویی در آب",
-    "حفاظت از درختان",
-    "کاهش آلودگی هوا",
-  ];
+  const environmentalTopicsMap = {
+    "حفاظت از حیوانات": "Animal Protection",
+    "کاهش زباله": "Waste Reduction",
+    "صرفه‌جویی در آب": "Water Conservation",
+    "حفاظت از درختان": "Tree Preservation",
+    "کاهش آلودگی هوا": "Air Pollution Reduction",
+  };
 
-  const livingEnvironments = ["شهر", "روستا", "حومه شهر", "ساحل", "کوهستان"];
+  const livingEnvironmentsMap = {
+    شهر: "City",
+    روستا: "Village",
+    "حومه شهر": "Suburbs",
+    ساحل: "Coast",
+    کوهستان: "Mountainous Area",
+  };
 
   const academicApproachesData = [
     {
@@ -97,24 +116,41 @@ export function HomePage() {
     },
   ];
 
-  const handleSubmit = async (values) => {
+  const transformFormData = (data: FormValues) => ({
+    ...data,
+    environmentalTopic:
+      environmentalTopicsMap[
+        data.environmentalTopic as keyof typeof environmentalTopicsMap
+      ],
+    livingEnvironment:
+      livingEnvironmentsMap[
+        data.livingEnvironment as keyof typeof livingEnvironmentsMap
+      ],
+  });
+
+  const handleSubmit = async (values: FormValues) => {
+    const transformedValues = transformFormData(values);
     setIsGenerating(true);
-  
+
     try {
-      const response = await fetch('https://aibots.kharcoin.info/ai-story/build', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-      
+      const response = await fetch(
+        "https://aibots.kharcoin.info/ai-story/build",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transformedValues),
+        }
+      );
+
       const data = await response.json();
       setResponse(data);
       setShowForm(false);
+      console.log(data);
     } catch (error) {
-      console.error('Error:', error);
-      setResponse('متاسفانه در ارسال فرم خطایی رخ داد');
+      console.error("Error:", error);
+      setResponse("متاسفانه در ارسال فرم خطایی رخ داد");
     } finally {
       setIsGenerating(false);
     }
@@ -130,9 +166,8 @@ export function HomePage() {
 
         <div className={classes.inner}>
           <Title className={classes.title}>
-            قصه‌گوی
+            قصه‌گوی{" "}
             <Text component="span" className={classes.highlight} inherit>
-              {" "}
               هوش مصنوعی{" "}
             </Text>
             برای کودکان
@@ -140,8 +175,8 @@ export function HomePage() {
 
           <Container p={0} size={600}>
             <Text size="lg" c="dimmed" className={classes.description}>
-              تا حالا تلاش کردید با کمک هوش مصنوعی برای کودکان قصه بسازید؟ احتمالا
-              تجربه خوبی نداشتید و نتیجه عجیب و غریبی تحویل گرفتید!
+              تا حالا تلاش کردید با کمک هوش مصنوعی برای کودکان قصه بسازید؟
+              احتمالا تجربه خوبی نداشتید و نتیجه عجیب و غریبی تحویل گرفتید!
               <br />
               یا حتا اگر نتیجه خوبی در بر داشته، در مورد کیفیت آکادمیک آن که بر
               رشد و شناخت کودک چه تاثیری میگذارد شک کردید،
@@ -156,7 +191,10 @@ export function HomePage() {
         {showForm ? (
           <Card shadow="sm" p="lg" radius="md" withBorder>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-              <LoadingOverlay visible={isGenerating} overlayProps={{ blur: 2 }} />
+              <LoadingOverlay
+                visible={isGenerating}
+                overlayProps={{ blur: 2 }}
+              />
               <Stack>
                 <TextInput
                   label="نام کودک"
@@ -171,28 +209,26 @@ export function HomePage() {
                     max={11}
                     step={1}
                     marks={[
-                      { value: 2, label: '2' },
-                      { value: 6, label: '6' },
-                      { value: 11, label: '11' },
+                      { value: 2, label: "2" },
+                      { value: 6, label: "6" },
+                      { value: 11, label: "11" },
                     ]}
                     {...form.getInputProps("age")}
                   />
                 </Stack>
-
                 <Select
                   label="موضوع زیست‌محیطی"
                   placeholder="انتخاب کنید"
-                  data={environmentalTopics}
+                  data={Object.keys(environmentalTopicsMap)}
                   {...form.getInputProps("environmentalTopic")}
                 />
 
                 <Select
                   label="محیط زندگی"
                   placeholder="انتخاب کنید"
-                  data={livingEnvironments}
+                  data={Object.keys(livingEnvironmentsMap)}
                   {...form.getInputProps("livingEnvironment")}
                 />
-
                 <Text size="sm">رویکردهای آکادمیک</Text>
                 <Grid>
                   {academicApproachesData.map((approach) => (
@@ -200,9 +236,12 @@ export function HomePage() {
                       <Checkbox
                         label={approach.label}
                         description={approach.description}
-                        {...form.getInputProps(`academicApproaches.${approach.id}`, {
-                          type: "checkbox",
-                        })}
+                        {...form.getInputProps(
+                          `academicApproaches.${approach.id}`,
+                          {
+                            type: "checkbox",
+                          }
+                        )}
                       />
                     </Grid.Col>
                   ))}
@@ -218,11 +257,12 @@ export function HomePage() {
           <Paper shadow="sm" p="lg" radius="md" withBorder>
             <Stack>
               <Text size="xl" mb="md">
-                داستان {form.values.childName} در  {form.values.livingEnvironment} برای {form.values.environmentalTopic}
+                داستان {form.values.childName} در{" "}
+                {form.values.livingEnvironment} برای{" "}
+                {form.values.environmentalTopic}
               </Text>
-              <Text>
-                {response.message}
-                {response.toString()}                
+              <Text>{/* @ts-ignore */}
+                {response.aiResponse}
               </Text>
               <Button variant="light" onClick={() => setShowForm(true)}>
                 ساخت داستان جدید
