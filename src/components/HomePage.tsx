@@ -17,6 +17,7 @@ import {
 import { useForm } from "@mantine/form";
 import { Dots } from "./Dots";
 import classes from "./HeroText.module.css";
+import Markdown from 'react-markdown'
 
 interface FormValues {
   childName: string;
@@ -261,8 +262,11 @@ export function HomePage() {
                 {form.values.livingEnvironment} برای{" "}
                 {form.values.environmentalTopic}
               </Text>
-              <Text>{/* @ts-ignore */}
-                {response.aiResponse}
+              <Text>
+                <Markdown>
+                {/* @ts-ignore */}
+                {response.aiResponse}        
+                </Markdown>
               </Text>
               <Button variant="light" onClick={() => setShowForm(true)}>
                 ساخت داستان جدید
