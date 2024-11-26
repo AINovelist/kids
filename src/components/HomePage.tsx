@@ -13,11 +13,15 @@ import {
   Title,
   Slider,
   LoadingOverlay,
+  Tooltip,
+  ActionIcon,
+  Modal,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dots } from "./Dots";
 import classes from "./HeroText.module.css";
-import Markdown from 'react-markdown'
+import Markdown from "react-markdown";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 interface FormValues {
   childName: string;
@@ -38,6 +42,13 @@ export function HomePage() {
   const [response, setResponse] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showForm, setShowForm] = useState(true);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = (content: string) => {
+    {/* @ts-ignore */}
+    setModalContent(content);
+    setModalOpen(true);
+  };
 
   const form = useForm({
     initialValues: {
@@ -89,31 +100,43 @@ export function HomePage() {
       id: "piaget",
       label: "نظریه رشد شناختی پیاژه",
       description: "تطبیق پیام و زبان داستان با سطح شناختی کودک",
+      fullDescription:
+        "نظریه رشد شناختی پیاژه بر اساس مراحل رشد شناختی کودکان بنا شده است. این نظریه تأکید می‌کند که باید محتوای آموزشی و داستان‌ها با سطح رشد شناختی کودک مطابقت داشته باشد تا بیشترین تأثیر را داشته باشد.",
     },
     {
       id: "activeLearning",
       label: "نظریه یادگیری فعال",
       description: "درگیر کردن کودک در تصمیم‌گیری و حل چالش",
+      fullDescription:
+        "یادگیری فعال رویکردی است که کودکان را به شرکت در فرآیند یادگیری، حل مسائل، و تصمیم‌گیری دعوت می‌کند. این روش به افزایش مهارت‌های تفکر انتقادی و خلاقیت کمک می‌کند.",
     },
     {
       id: "roleModeling",
       label: "نقش‌پذیری",
       description: "ارائه الگوی مثبت برای کودک",
+      fullDescription:
+        "نقش‌پذیری یکی از مؤثرترین روش‌های یادگیری است که کودکان با مشاهده رفتارها و اعمال الگوهای مثبت، یادگیری و رشد می‌کنند.",
     },
     {
       id: "multipleIntelligences",
       label: "هوش‌های چندگانه گاردنر",
       description: "استفاده از انواع مختلف هوش در داستان",
+      fullDescription:
+        "نظریه هوش‌های چندگانه گاردنر بیان می‌کند که افراد انواع مختلفی از هوش دارند، مانند هوش کلامی، منطقی، موسیقیایی، و فضایی. در داستان‌نویسی برای کودکان، استفاده از این تنوع هوش می‌تواند محتوای غنی‌تر و جذابتری ایجاد کند.",
     },
     {
       id: "vygotsky",
       label: "نظریه منطقه تقریبی رشد ویگوتسکی",
       description: "وجود شخصیت راهنما در داستان",
+      fullDescription:
+        "این نظریه تأکید می‌کند که کودکان می‌توانند از طریق کمک گرفتن از یک راهنما (مانند والدین یا معلم) به سطوح بالاتری از یادگیری دست یابند. در داستان‌ها، وجود شخصیت راهنما می‌تواند این نقش را ایفا کند.",
     },
     {
       id: "personalMotivation",
       label: "تقویت انگیزه شخصی",
       description: "تقویت حس استقلال و تاثیرگذاری کودک",
+      fullDescription:
+        "این رویکرد به اهمیت ایجاد حس مسئولیت‌پذیری، اعتماد به نفس، و استقلال در کودکان اشاره دارد. داستان‌ها می‌توانند با تأکید بر موفقیت‌ها و انتخاب‌های شخصیت‌ها، این حس را تقویت کنند.",
     },
   ];
 
@@ -217,36 +240,61 @@ export function HomePage() {
                     {...form.getInputProps("age")}
                   />
                 </Stack>
-                <Select
-                  label="موضوع زیست‌محیطی"
-                  placeholder="انتخاب کنید"
-                  data={Object.keys(environmentalTopicsMap)}
-                  {...form.getInputProps("environmentalTopic")}
-                />
 
-                <Select
-                  label="محیط زندگی"
-                  placeholder="انتخاب کنید"
-                  data={Object.keys(livingEnvironmentsMap)}
-                  {...form.getInputProps("livingEnvironment")}
-                />
+                <Grid>
+                  <Grid.Col span={6}>
+                    <Select
+                      label="موضوع زیست‌محیطی"
+                      placeholder="انتخاب کنید"
+                      data={Object.keys(environmentalTopicsMap)}
+                      {...form.getInputProps("environmentalTopic")}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Select
+                      label="محیط زندگی"
+                      placeholder="انتخاب کنید"
+                      data={Object.keys(livingEnvironmentsMap)}
+                      {...form.getInputProps("livingEnvironment")}
+                    />
+                  </Grid.Col>
+                </Grid>
+
                 <Text size="sm">رویکردهای آکادمیک</Text>
                 <Grid>
                   {academicApproachesData.map((approach) => (
                     <Grid.Col span={6} key={approach.id}>
-                      <Checkbox
-                        label={approach.label}
-                        description={approach.description}
-                        {...form.getInputProps(
-                          `academicApproaches.${approach.id}`,
-                          {
-                            type: "checkbox",
-                          }
-                        )}
-                      />
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Checkbox
+                          label={approach.label}
+                          description={approach.description}
+                          {...form.getInputProps(
+                            `academicApproaches.${approach.id}`,
+                            {
+                              type: "checkbox",
+                            }
+                          )}
+                        />
+                        <Tooltip label="اطلاعات بیشتر" withArrow>
+                          <ActionIcon
+                            onClick={() => openModal(approach.fullDescription)}
+                            style={{ marginRight: "20px" }}
+                          >
+                            <IconInfoCircle size={16} />
+                          </ActionIcon>
+                        </Tooltip>
+                      </div>
                     </Grid.Col>
                   ))}
                 </Grid>
+
+                <Modal
+                  opened={modalOpen}
+                  onClose={() => setModalOpen(false)}
+                  title="توضیحات بیشتر"
+                >
+                  <Text>{modalContent}</Text>
+                </Modal>
 
                 <Button type="submit" loading={isGenerating}>
                   {isGenerating ? "در حال ساخت داستان..." : "ساخت داستان"}
@@ -264,8 +312,8 @@ export function HomePage() {
               </Text>
               <Text>
                 <Markdown>
-                {/* @ts-ignore */}
-                {response.aiResponse}        
+                  {/* @ts-ignore */}
+                  {response.aiResponse}
                 </Markdown>
               </Text>
               <Button variant="light" onClick={() => setShowForm(true)}>
