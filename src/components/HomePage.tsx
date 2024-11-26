@@ -16,6 +16,9 @@ import {
   Tooltip,
   ActionIcon,
   Modal,
+  Badge,
+  Group,
+  Image,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Dots } from "./Dots";
@@ -322,6 +325,104 @@ export function HomePage() {
             </Stack>
           </Paper>
         )}
+        <Grid mt={50}>
+          <Grid.Col span={3}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://github.com/AINovelist/stories/raw/main/kids/assets/images/Air%D9%80Pollution%D9%80Reduction%D9%801.jpeg"
+                  height={160}
+                  alt="Norway"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>کاهش آلودگی هوا</Text>
+                <Badge color="pink">AI</Badge>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                .
+              </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                قصه‌های تولید شده
+              </Button>
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://raw.githubusercontent.com/AINovelist/stories/refs/heads/main/kids/assets/images/Animal%D9%80Protection%D9%804.jpeg"
+                  height={160}
+                  alt="حفاظت از حیوانات"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>حفاظت از حیوانات</Text>
+                <Badge color="pink">AI</Badge>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                .
+              </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                قصه‌های تولید شده
+              </Button>
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://github.com/AINovelist/stories/raw/main/kids/assets/images/Tree%D9%80Preservation%D9%803.jpeg"
+                  height={160}
+                  alt="Norway"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>حفاظت از درختان</Text>
+                <Badge color="pink">AI</Badge>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                .
+              </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                قصه‌های تولید شده
+              </Button>
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder>
+              <Card.Section>
+                <Image
+                  src="https://raw.githubusercontent.com/AINovelist/stories/main/kids/assets/images/Waste%D9%80Reduction%D9%801.jpeg"
+                  height={160}
+                  alt="Norway"
+                />
+              </Card.Section>
+
+              <Group justify="space-between" mt="md" mb="xs">
+                <Text fw={500}>کاهش زباله</Text>
+                <Badge color="pink">AI</Badge>
+              </Group>
+
+              <Text size="sm" c="dimmed">
+                .
+              </Text>
+
+              <Button color="blue" fullWidth mt="md" radius="md">
+                قصه‌های تولید شده
+              </Button>
+            </Card>
+          </Grid.Col>
+        </Grid>
       </Container>
     </>
   );
