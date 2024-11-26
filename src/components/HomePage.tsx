@@ -326,7 +326,7 @@ export function HomePage() {
           </Paper>
         )}
         <Grid mt={50}>
-          <Grid.Col span={3}>
+          <Grid.Col span={6}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -350,7 +350,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={6}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -374,7 +374,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={6}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -398,7 +398,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={3}>
+          <Grid.Col span={6}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
