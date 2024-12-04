@@ -326,7 +326,7 @@ export function HomePage() {
           </Paper>
         )}
         <Grid mt={50}>
-        <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
+        <Grid.Col span={{ base: 12, xs: 12, md: 4, lg: 3}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -344,7 +344,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
+          <Grid.Col span={{ base: 12, xs: 12, md: 4, lg: 3}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -362,7 +362,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
+          <Grid.Col span={{ base: 12, xs: 12, md: 4, lg: 3}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -380,7 +380,7 @@ export function HomePage() {
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
+          <Grid.Col span={{ base: 12, xs: 12, md: 4, lg: 3}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
