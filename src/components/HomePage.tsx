@@ -326,7 +326,7 @@ export function HomePage() {
           </Paper>
         )}
         <Grid mt={50}>
-          <Grid.Col span={6}>
+        <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -335,22 +335,16 @@ export function HomePage() {
                   alt="Norway"
                 />
               </Card.Section>
-
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>کاهش آلودگی هوا</Text>
                 <Badge color="pink">AI</Badge>
               </Group>
-
-              <Text size="sm" c="dimmed">
-                .
-              </Text>
-
               <Button color="blue" fullWidth mt="md" radius="md">
-                قصه‌های تولید شده
+                قصه‌ها
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -359,22 +353,16 @@ export function HomePage() {
                   alt="حفاظت از حیوانات"
                 />
               </Card.Section>
-
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>حفاظت از حیوانات</Text>
                 <Badge color="pink">AI</Badge>
               </Group>
-
-              <Text size="sm" c="dimmed">
-                .
-              </Text>
-
               <Button color="blue" fullWidth mt="md" radius="md">
-                قصه‌های تولید شده
+                قصه‌ها
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -383,22 +371,16 @@ export function HomePage() {
                   alt="Norway"
                 />
               </Card.Section>
-
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>حفاظت از درختان</Text>
                 <Badge color="pink">AI</Badge>
               </Group>
-
-              <Text size="sm" c="dimmed">
-                .
-              </Text>
-
               <Button color="blue" fullWidth mt="md" radius="md">
-                قصه‌های تولید شده
+                قصه‌ها
               </Button>
             </Card>
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={{ base: 12, xs: 4, md: 3, lg: 6}}>
             <Card shadow="sm" padding="lg" radius="md" withBorder>
               <Card.Section>
                 <Image
@@ -407,18 +389,12 @@ export function HomePage() {
                   alt="Norway"
                 />
               </Card.Section>
-
               <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>کاهش زباله</Text>
                 <Badge color="pink">AI</Badge>
               </Group>
-
-              <Text size="sm" c="dimmed">
-                .
-              </Text>
-
               <Button color="blue" fullWidth mt="md" radius="md">
-                قصه‌های تولید شده
+                قصه‌ها
               </Button>
             </Card>
           </Grid.Col>
